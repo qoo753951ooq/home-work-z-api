@@ -1,0 +1,83 @@
+basePath: /home-work-z-api
+definitions:
+  vo.OrderVO:
+    properties:
+      buy:
+        type: boolean
+      date:
+        type: string
+      id:
+        type: integer
+      limit_price:
+        type: number
+      market_price:
+        type: number
+      quantity:
+        type: integer
+      sell:
+        type: boolean
+    type: object
+host: 127.0.0.1:8080
+info:
+  contact:
+    email: qoo753951ooq@gmail.com
+    name: Alan Syu
+  description: Home work Z Swagger 說明文件
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Home Work Z API
+  version: "1.0"
+paths:
+  /order:
+    get:
+      parameters:
+      - default: "2001-01-01"
+        description: 開始時間 (yyyy-MM-dd)
+        in: query
+        name: starttime
+        type: string
+      - default: "2001-01-02"
+        description: 結束時間 (yyyy-MM-dd)
+        in: query
+        name: endtime
+        type: string
+      - default: 10
+        description: 取前幾筆
+        in: query
+        name: top
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/vo.OrderVO'
+            type: array
+      summary: getList
+      tags:
+      - trade
+  /order/{id}:
+    get:
+      parameters:
+      - description: 編號
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/vo.OrderVO'
+      summary: getOne
+      tags:
+      - trade
+schemes:
+- http
+swagger: "2.0"
