@@ -60,6 +60,52 @@ paths:
       summary: getList
       tags:
       - trade
+    post:
+      consumes:
+      - multipart/form-data
+      description: 新增訂單
+      parameters:
+      - default: false
+        in: formData
+        name: buy
+        required: true
+        type: boolean
+      - default: 訂單日期(yyyy-MM-dd)
+        in: formData
+        name: date
+        required: true
+        type: string
+      - default: 0
+        in: formData
+        name: limit_price
+        type: number
+      - default: 0
+        in: formData
+        name: market_price
+        type: number
+      - default: 0
+        in: formData
+        name: quantity
+        required: true
+        type: integer
+      - default: false
+        in: formData
+        name: sell
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/vo.OrderVO'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: addOne
+      tags:
+      - trade
   /order/{id}:
     get:
       parameters:

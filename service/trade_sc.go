@@ -14,3 +14,8 @@ func GetOrder(id int64) vo.OrderVO {
 	o := trade.GetOrder(id)
 	return o
 }
+
+func PostOrder(body vo.OrderPostVO) (vo.OrderVO, error) {
+	o, err := trade.AddOrder(body)
+	return o, err
+}

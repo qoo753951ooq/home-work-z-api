@@ -1,8 +1,10 @@
 package controller
 
 import (
+	"home-work-z-api/model/vo"
 	"home-work-z-api/service"
 	"home-work-z-api/util"
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -37,4 +39,32 @@ func OrderGet(ctx *gin.Context) {
 	id, _ := strconv.ParseInt(idStr, 10, 64)
 
 	util.Success(ctx, "json", service.GetOrder(id))
+}
+
+// @Summary addOne
+// @Description 新增訂單
+// @Tags trade
+// @Accept mpfd
+// @Produce json
+// @param postVO formData vo.OrderPostVO true "formData for OrderPostVO content"
+// @Success 200 {object} vo.OrderVO
+// @Failure 400 {string} string
+// @router /order [post]
+func OrderPost(ctx *gin.Context) {
+
+	var oBody vo.OrderPostVO
+
+	if err := ctx.ShouldBind(&oBody); err != nil {
+		util.Failure(ctx, "string", http.StatusBadRequest, err.Error())
+		return
+	}
+
+	order, err := service.PostOrder(oBody)
+
+	if err != nil {
+		util.Failure(ctx, "string", http.StatusBadRequest, err.Error())
+		return
+	}
+
+	util.Success(ctx, "json", order)
 }

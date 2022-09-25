@@ -1,6 +1,7 @@
 package dao
 
 import (
+	"fmt"
 	db "home-work-z-api/database"
 	"time"
 )
@@ -48,4 +49,17 @@ func GetOrderById(id int64) Order {
 	}
 
 	return order
+}
+
+func InsertOrder(data Order) (int64, error) {
+
+	mariaDB, err := db.GetMariaDB()
+
+	if err != nil {
+		return data.Id, err
+	}
+
+	result := mariaDB.Debug().Create(&data)
+	fmt.Printf("Insert %s RowsAffected: %d\n", "order", result.RowsAffected)
+	return data.Id, result.Error
 }

@@ -63,6 +63,74 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "新增訂單",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "trade"
+                ],
+                "summary": "addOne",
+                "parameters": [
+                    {
+                        "type": "boolean",
+                        "default": false,
+                        "name": "buy",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "訂單日期(yyyy-MM-dd)",
+                        "name": "date",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "default": 0,
+                        "name": "limit_price",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "number",
+                        "default": 0,
+                        "name": "market_price",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "name": "quantity",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "default": false,
+                        "name": "sell",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/vo.OrderVO"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         },
         "/order/{id}": {

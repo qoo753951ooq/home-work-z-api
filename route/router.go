@@ -28,5 +28,6 @@ func setInformationRouter(apiGroup *gin.RouterGroup) {
 	{
 		orderRouter.GET("", controller.OrderGetList)
 		orderRouter.GET("/:id", controller.OrderGet)
+		orderRouter.POST("", controller.OrderPost)
 	}
 }

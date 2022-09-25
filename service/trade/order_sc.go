@@ -38,6 +38,23 @@ func GetOrder(id int64) vo.OrderVO {
 	return order
 }
 
+func AddOrder(data vo.OrderPostVO) (vo.OrderVO, error) {
+
+	util.AddOrderMutex.Lock()
+
+	order := newInsertOrder(data)
+	orderCreateId, err := dao.InsertOrder(order)
+
+	if err != nil {
+		util.AddOrderMutex.Unlock()
+		return vo.OrderVO{}, err
+	}
+
+	util.AddOrderMutex.Unlock()
+	return vo.OrderVO{Id: orderCreateId}, nil
+
+}
+
 func getOrderList(starttime, endtime string) []*vo.OrderVO {
 
 	order := make([]*vo.OrderVO, 0)
@@ -71,4 +88,37 @@ func getOrder(data dao.Order) vo.OrderVO {
 	o.Date = data.Date.Format(util.DateFormat)
 
 	return o
+}
+
+func newInsertOrder(data vo.OrderPostVO) dao.Order {
+
+	var order dao.Order
+
+	order.Quantity = data.Quantity
+
+	if data.Buy != false {
+		order.Buy = true
+	} else {
+		order.Buy = false
+	}
+
+	if data.Sell != false {
+		order.Sell = true
+	} else {
+		order.Sell = false
+	}
+
+	if data.Market_price != model.Zero_value {
+		order.Market_price = data.Market_price
+	}
+
+	if data.Limit_price != model.Zero_value {
+		order.Limit_price = data.Limit_price
+	}
+
+	if date, err := util.GetLocationDate(data.Date); err == nil {
+		order.Date = date
+	}
+
+	return order
 }
