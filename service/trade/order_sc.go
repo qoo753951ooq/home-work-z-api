@@ -70,6 +70,19 @@ func EditOrder(id int64, data vo.OrderPutVO) (string, error) {
 	return model.Ok_string, nil
 }
 
+func DeleteOrder(id int64) (string, error) {
+
+	if deleteNews := dao.GetOrderById(id); deleteNews.Id == model.Zero_value {
+		return model.Empty_string, fmt.Errorf("%s\n", model.Id_not_found_string)
+	}
+
+	if err := dao.DeleteOrder(id); err != nil {
+		return model.Empty_string, err
+	}
+
+	return model.Ok_string, nil
+}
+
 func getOrderList(starttime, endtime string) []*vo.OrderVO {
 
 	order := make([]*vo.OrderVO, 0)

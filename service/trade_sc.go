@@ -24,3 +24,8 @@ func PutOrder(id int64, body vo.OrderPutVO) (string, error) {
 	res, err := trade.EditOrder(id, body)
 	return res, err
 }
+
+func DeleteOrder(id int64) (string, error) {
+	result, err := trade.DeleteOrder(id)
+	return result, err
+}

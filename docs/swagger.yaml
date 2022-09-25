@@ -56,6 +56,7 @@ info:
 paths:
   /order:
     get:
+      description: 訂單列表
       parameters:
       - default: "2001-01-01"
         description: 開始時間 (yyyy-MM-dd)
@@ -132,7 +133,30 @@ paths:
       tags:
       - trade
   /order/{id}:
+    delete:
+      description: 刪除訂單
+      parameters:
+      - description: 編號
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: deleteOne
+      tags:
+      - trade
     get:
+      description: 單筆訂單
       parameters:
       - description: 編號
         in: path

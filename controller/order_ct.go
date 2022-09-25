@@ -11,6 +11,7 @@ import (
 )
 
 // @Summary getList
+// @Description 訂單列表
 // @Tags trade
 // @Produce  json
 // @param starttime query string false "開始時間 (yyyy-MM-dd)" default(2001-01-01)
@@ -28,6 +29,7 @@ func OrderGetList(ctx *gin.Context) {
 }
 
 // @Summary getOne
+// @Description 單筆訂單
 // @Tags trade
 // @Produce  json
 // @param id path int true "編號"
@@ -92,6 +94,29 @@ func OrderPut(ctx *gin.Context) {
 	}
 
 	result, err := service.PutOrder(id, oBody)
+
+	if err != nil {
+		util.Failure(ctx, "string", http.StatusBadRequest, err.Error())
+		return
+	}
+
+	util.Success(ctx, "string", result)
+}
+
+// @Summary deleteOne
+// @Description 刪除訂單
+// @Tags trade
+// @Produce plain
+// @param id path int true "編號"
+// @Success 200 {string} string
+// @Failure 400 {string} string
+// @router /order/{id} [delete]
+func OrderDelete(ctx *gin.Context) {
+
+	idStr := ctx.Param("id")
+	id, _ := strconv.ParseInt(idStr, 10, 64)
+
+	result, err := service.DeleteOrder(id)
 
 	if err != nil {
 		util.Failure(ctx, "string", http.StatusBadRequest, err.Error())

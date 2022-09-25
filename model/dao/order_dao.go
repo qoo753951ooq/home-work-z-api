@@ -76,3 +76,16 @@ func UpdateOrder(id int64, data Order) error {
 	fmt.Printf("Update %s RowsAffected: %d\n", "order", result.RowsAffected)
 	return result.Error
 }
+
+func DeleteOrder(id int64) error {
+
+	mariaDB, err := db.GetMariaDB()
+
+	if err != nil {
+		return err
+	}
+
+	result := mariaDB.Debug().Where("id = ?", id).Delete(&Order{})
+	fmt.Printf("Delete %s RowsAffected: %d\n", "order", result.RowsAffected)
+	return result.Error
+}

@@ -26,6 +26,7 @@ const docTemplate = `{
     "paths": {
         "/order": {
             "get": {
+                "description": "訂單列表",
                 "produces": [
                     "application/json"
                 ],
@@ -140,6 +141,7 @@ const docTemplate = `{
         },
         "/order/{id}": {
             "get": {
+                "description": "單筆訂單",
                 "produces": [
                     "application/json"
                 ],
@@ -193,6 +195,39 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/vo.OrderPutVO"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "刪除訂單",
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "trade"
+                ],
+                "summary": "deleteOne",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "編號",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
