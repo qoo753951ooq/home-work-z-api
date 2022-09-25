@@ -16,6 +16,9 @@ import (
 // @host 127.0.0.1:8080
 // @BasePath /home-work-z-api
 // @schemes http
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	db.InitDB()
 	route.InitRouter()

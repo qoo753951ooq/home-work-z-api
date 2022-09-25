@@ -41,6 +41,20 @@ definitions:
       sell:
         type: boolean
     type: object
+  vo.UserPostVO:
+    properties:
+      account:
+        default: alan
+        example: 帳號
+        type: string
+      password:
+        default: home_work_z
+        example: 密碼
+        type: string
+    required:
+    - account
+    - password
+    type: object
 host: 127.0.0.1:8080
 info:
   contact:
@@ -82,6 +96,8 @@ paths:
             items:
               $ref: '#/definitions/vo.OrderVO'
             type: array
+      security:
+      - BearerAuth: []
       summary: getList
       tags:
       - trade
@@ -129,6 +145,8 @@ paths:
           description: Bad Request
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: addOne
       tags:
       - trade
@@ -152,6 +170,8 @@ paths:
           description: Bad Request
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: deleteOne
       tags:
       - trade
@@ -170,6 +190,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/vo.OrderVO'
+      security:
+      - BearerAuth: []
       summary: getOne
       tags:
       - trade
@@ -200,9 +222,42 @@ paths:
           description: Bad Request
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: editOne
       tags:
       - trade
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: 登入
+      parameters:
+      - description: body for UserPostVO content
+        in: body
+        name: postVO
+        required: true
+        schema:
+          $ref: '#/definitions/vo.UserPostVO'
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: Token
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: login
+      tags:
+      - authorization
 schemes:
 - http
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

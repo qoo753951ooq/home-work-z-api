@@ -3,6 +3,7 @@ package route
 import (
 	"home-work-z-api/controller"
 	"home-work-z-api/docs"
+	"home-work-z-api/middleware"
 
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
@@ -24,7 +25,12 @@ func InitRouter() {
 
 func setInformationRouter(apiGroup *gin.RouterGroup) {
 
-	orderRouter := apiGroup.Group("/order")
+	authRouter := apiGroup.Group("/user")
+	{
+		authRouter.POST("/login", controller.UserLoginPost)
+	}
+
+	orderRouter := apiGroup.Group("/order").Use(middleware.JWTAuth())
 	{
 		orderRouter.GET("", controller.OrderGetList)
 		orderRouter.GET("/:id", controller.OrderGet)
