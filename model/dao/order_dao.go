@@ -63,3 +63,16 @@ func InsertOrder(data Order) (int64, error) {
 	fmt.Printf("Insert %s RowsAffected: %d\n", "order", result.RowsAffected)
 	return data.Id, result.Error
 }
+
+func UpdateOrder(id int64, data Order) error {
+
+	mariaDB, err := db.GetMariaDB()
+
+	if err != nil {
+		return err
+	}
+
+	result := mariaDB.Debug().Model(&Order{}).Where("id = ?", id).Updates(&data)
+	fmt.Printf("Update %s RowsAffected: %d\n", "order", result.RowsAffected)
+	return result.Error
+}

@@ -19,3 +19,8 @@ func PostOrder(body vo.OrderPostVO) (vo.OrderVO, error) {
 	o, err := trade.AddOrder(body)
 	return o, err
 }
+
+func PutOrder(id int64, body vo.OrderPutVO) (string, error) {
+	res, err := trade.EditOrder(id, body)
+	return res, err
+}

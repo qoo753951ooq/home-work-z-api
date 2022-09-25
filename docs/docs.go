@@ -118,7 +118,8 @@ const docTemplate = `{
                         "type": "boolean",
                         "default": false,
                         "name": "sell",
-                        "in": "formData"
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -163,10 +164,88 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "put": {
+                "description": "編輯訂單",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "tags": [
+                    "trade"
+                ],
+                "summary": "editOne",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "編號",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "body for OrderPutVO content",
+                        "name": "putVO",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/vo.OrderPutVO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         }
     },
     "definitions": {
+        "vo.OrderPutVO": {
+            "type": "object",
+            "required": [
+                "date",
+                "quantity"
+            ],
+            "properties": {
+                "buy": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "date": {
+                    "type": "string",
+                    "example": "訂單日期(yyyy-MM-dd)"
+                },
+                "limit_price": {
+                    "type": "number",
+                    "example": 0
+                },
+                "market_price": {
+                    "type": "number",
+                    "example": 0
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "sell": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
         "vo.OrderVO": {
             "type": "object",
             "properties": {

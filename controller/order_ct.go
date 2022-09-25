@@ -68,3 +68,35 @@ func OrderPost(ctx *gin.Context) {
 
 	util.Success(ctx, "json", order)
 }
+
+// @Summary editOne
+// @Description 編輯訂單
+// @Tags trade
+// @Accept json
+// @Produce plain
+// @param id path int true "編號"
+// @param putVO body vo.OrderPutVO true "body for OrderPutVO content"
+// @Success 200 {string} string
+// @Failure 400 {string} string
+// @router /order/{id} [put]
+func OrderPut(ctx *gin.Context) {
+
+	var oBody vo.OrderPutVO
+
+	idStr := ctx.Param("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+
+	if err = ctx.ShouldBindJSON(&oBody); err != nil {
+		util.Failure(ctx, "string", http.StatusBadRequest, err.Error())
+		return
+	}
+
+	result, err := service.PutOrder(id, oBody)
+
+	if err != nil {
+		util.Failure(ctx, "string", http.StatusBadRequest, err.Error())
+		return
+	}
+
+	util.Success(ctx, "string", result)
+}

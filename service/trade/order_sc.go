@@ -1,6 +1,7 @@
 package trade
 
 import (
+	"fmt"
 	"home-work-z-api/model"
 	"home-work-z-api/model/dao"
 	"home-work-z-api/model/vo"
@@ -52,7 +53,21 @@ func AddOrder(data vo.OrderPostVO) (vo.OrderVO, error) {
 
 	util.AddOrderMutex.Unlock()
 	return vo.OrderVO{Id: orderCreateId}, nil
+}
 
+func EditOrder(id int64, data vo.OrderPutVO) (string, error) {
+
+	if editNews := dao.GetOrderById(id); editNews.Id == model.Zero_value {
+		return model.Empty_string, fmt.Errorf("%s\n", model.Id_not_found_string)
+	}
+
+	order := newUpdateOrder(data)
+
+	if err := dao.UpdateOrder(id, order); err != nil {
+		return model.Empty_string, err
+	}
+
+	return model.Ok_string, nil
 }
 
 func getOrderList(starttime, endtime string) []*vo.OrderVO {
@@ -91,6 +106,39 @@ func getOrder(data dao.Order) vo.OrderVO {
 }
 
 func newInsertOrder(data vo.OrderPostVO) dao.Order {
+
+	var order dao.Order
+
+	order.Quantity = data.Quantity
+
+	if data.Buy != false {
+		order.Buy = true
+	} else {
+		order.Buy = false
+	}
+
+	if data.Sell != false {
+		order.Sell = true
+	} else {
+		order.Sell = false
+	}
+
+	if data.Market_price != model.Zero_value {
+		order.Market_price = data.Market_price
+	}
+
+	if data.Limit_price != model.Zero_value {
+		order.Limit_price = data.Limit_price
+	}
+
+	if date, err := util.GetLocationDate(data.Date); err == nil {
+		order.Date = date
+	}
+
+	return order
+}
+
+func newUpdateOrder(data vo.OrderPutVO) dao.Order {
 
 	var order dao.Order
 

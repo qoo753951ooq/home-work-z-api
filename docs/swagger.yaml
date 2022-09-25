@@ -1,5 +1,29 @@
 basePath: /home-work-z-api
 definitions:
+  vo.OrderPutVO:
+    properties:
+      buy:
+        example: false
+        type: boolean
+      date:
+        example: 訂單日期(yyyy-MM-dd)
+        type: string
+      limit_price:
+        example: 0
+        type: number
+      market_price:
+        example: 0
+        type: number
+      quantity:
+        example: 0
+        type: integer
+      sell:
+        example: true
+        type: boolean
+    required:
+    - date
+    - quantity
+    type: object
   vo.OrderVO:
     properties:
       buy:
@@ -91,6 +115,7 @@ paths:
       - default: false
         in: formData
         name: sell
+        required: true
         type: boolean
       produces:
       - application/json
@@ -122,6 +147,36 @@ paths:
           schema:
             $ref: '#/definitions/vo.OrderVO'
       summary: getOne
+      tags:
+      - trade
+    put:
+      consumes:
+      - application/json
+      description: 編輯訂單
+      parameters:
+      - description: 編號
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: body for OrderPutVO content
+        in: body
+        name: putVO
+        required: true
+        schema:
+          $ref: '#/definitions/vo.OrderPutVO'
+      produces:
+      - text/plain
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: editOne
       tags:
       - trade
 schemes:
